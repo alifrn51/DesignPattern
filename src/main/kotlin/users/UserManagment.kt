@@ -2,6 +2,6 @@ package users
 
 fun main() {
 
-    val users = UserRepository.getInstance("sfeofi").user.forEach(::println)
+    UserRepository.getInstance("sfeofi").user.forEach(::println)
 
 }

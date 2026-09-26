@@ -5,7 +5,6 @@ import java.io.File
 
 class UserRepository private constructor() {
 
-
     private val file = File("users.json")
 
     private val _users  = getAllUser()
@@ -18,6 +17,7 @@ class UserRepository private constructor() {
 
     companion object{
 
+        private val lock = Any()
         private var instance : UserRepository? = null
 
         fun getInstance(password: String): UserRepository {
@@ -25,10 +25,15 @@ class UserRepository private constructor() {
             if (password != File("user_password.txt").readText().trim())
                 throw IllegalArgumentException("Wrong password")
 
-            if(instance == null)
-                instance = UserRepository()
+            instance?.let { return it }
 
-            return instance!!
+            synchronized(lock){
+                instance?.let { return it }
+
+                return UserRepository().also {
+                    instance = it
+                }
+            }
         }
     }
 
