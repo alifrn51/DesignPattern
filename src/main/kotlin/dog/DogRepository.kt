@@ -1,6 +1,7 @@
 package dog
 
 import kotlinx.serialization.json.Json
+import observer.Observer
 import users.User
 import java.io.File
 
@@ -14,9 +15,9 @@ class DogRepository private constructor() {
 
     private fun getAllDogs(): MutableList<Dog> = Json.decodeFromString(file.readText().trim())
 
-    private val observers = mutableListOf<Display>()
+    private val observers = mutableListOf<Observer<List<Dog>>>()
 
-    fun registerObserver(observer: Display){
+    fun registerObserver(observer: Observer<List<Dog>>){
         observers.add(observer)
         observer.onChange(_dogs)
     }

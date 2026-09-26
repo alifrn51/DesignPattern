@@ -1,6 +1,7 @@
 package users
 
 import kotlinx.serialization.json.Json
+import observer.Observer
 import java.io.File
 
 class UserRepository private constructor() {
@@ -17,14 +18,14 @@ class UserRepository private constructor() {
 
     private fun getAllUser(): MutableList<User> = Json.decodeFromString(file.readText().trim())
 
-    private val observers = mutableListOf<Display>()
+    private val observers = mutableListOf<Observer<List<User>>>()
     private fun notifyObservers(){
         for (observer in observers){
             observer.onChange(_users)
         }
     }
 
-    fun registerObserver(observer: Display){
+    fun registerObserver(observer: Observer<List<User>>){
         observers.add(observer)
         observer.onChange(_users)
     }

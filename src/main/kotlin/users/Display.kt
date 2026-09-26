@@ -1,5 +1,6 @@
 package users
 
+import observer.Observer
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -9,14 +10,13 @@ import javax.swing.JTextArea
 
 class Display {
 
-    private val textArea = JTextArea().apply {
-        isEditable = false
-        text = "Hello wordl"
-        font = Font(Font.SANS_SERIF, Font.PLAIN, 18)
-        margin = Insets(32, 32, 32, 32)
-    }
-
     fun show() {
+        val textArea = JTextArea().apply {
+            isEditable = false
+            text = "Hello wordl"
+            font = Font(Font.SANS_SERIF, Font.PLAIN, 18)
+            margin = Insets(32, 32, 32, 32)
+        }
         val scrollPane = JScrollPane(textArea)
         JFrame().apply {
             isVisible = true
@@ -25,13 +25,14 @@ class Display {
             add(scrollPane)
         }
 
-        UserRepository.getInstance("sfeoi").registerObserver(this)
+        UserRepository.getInstance("sfeoi").registerObserver(observer = object : Observer<List<User>> {
+            override fun onChange(newValue: List<User>) {
+                newValue.joinToString("\n")
+                    .let { textArea.text = it }
+            }
+        })
 
     }
 
-    fun onChange(users: List<User>) {
-        users.joinToString("\n")
-            .let { textArea.text = it }
-    }
 
 }
