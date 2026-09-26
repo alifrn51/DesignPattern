@@ -25,7 +25,7 @@ class UserRepository private constructor() {
         }
     }
 
-    fun registerObserver(observer: Observer<List<User>>){
+    fun addOnUsersChangedListener(observer: Observer<List<User>>){
         observers.add(observer)
         observer.onChange(_users)
     }

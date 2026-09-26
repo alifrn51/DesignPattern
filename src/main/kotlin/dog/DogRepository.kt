@@ -2,7 +2,6 @@ package dog
 
 import kotlinx.serialization.json.Json
 import observer.Observer
-import users.User
 import java.io.File
 
 class DogRepository private constructor() {
@@ -17,7 +16,7 @@ class DogRepository private constructor() {
 
     private val observers = mutableListOf<Observer<List<Dog>>>()
 
-    fun registerObserver(observer: Observer<List<Dog>>){
+    fun addOnDogsChangedListener(observer: Observer<List<Dog>>){
         observers.add(observer)
         observer.onChange(_dogs)
     }

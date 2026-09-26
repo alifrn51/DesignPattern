@@ -1,6 +1,5 @@
 package dog
 
-import observer.Observer
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -24,10 +23,8 @@ class Display {
             add(scrollPane)
         }
 
-        DogRepository.getInstance("asdfsadf").registerObserver(object : Observer<List<Dog>> {
-            override fun onChange(newValue: List<Dog>) {
-                newValue.joinToString("\n").let { textArea.text = it }
-            }
-        })
+        DogRepository.getInstance("asdfsadf").addOnDogsChangedListener { newValue ->
+            newValue.joinToString("\n").let { textArea.text = it }
+        }
     }
 }

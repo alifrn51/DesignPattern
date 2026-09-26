@@ -1,6 +1,5 @@
 package users
 
-import observer.Observer
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.Insets
@@ -25,11 +24,9 @@ class Display {
             add(scrollPane)
         }
 
-        UserRepository.getInstance("sfeoi").registerObserver(observer = object : Observer<List<User>> {
-            override fun onChange(newValue: List<User>) {
-                newValue.joinToString("\n")
-                    .let { textArea.text = it }
-            }
+        UserRepository.getInstance("sfeoi").addOnUsersChangedListener(observer = { users ->
+            users.joinToString("\n")
+                .let { textArea.text = it }
         })
 
     }

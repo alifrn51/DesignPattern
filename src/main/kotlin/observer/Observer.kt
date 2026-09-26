@@ -1,5 +1,5 @@
 package observer
 
-interface Observer<T> {
+fun interface Observer<T> {
     fun onChange(newValue: T)
 }
