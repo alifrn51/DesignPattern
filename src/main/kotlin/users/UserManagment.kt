@@ -2,7 +2,9 @@ package users
 
 fun main() {
 
-    val gui = Display()
-    gui.show()
+    Display().show()
+    Display().show()
+    Administrator().work()
+
 
 }

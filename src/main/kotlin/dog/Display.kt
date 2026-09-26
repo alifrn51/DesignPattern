@@ -9,13 +9,13 @@ import javax.swing.JTextArea
 
 class Display {
 
+    private val textArea = JTextArea().apply {
+        isEditable = false
+        text = "..."
+        margin = Insets(32,32,32,32)
+        font = Font(Font.SANS_SERIF, Font.PLAIN,16)
+    }
     fun show(){
-        val textArea = JTextArea().apply {
-            isEditable = false
-            text = "..."
-            margin = Insets(32,32,32,32)
-            font = Font(Font.SANS_SERIF, Font.PLAIN,16)
-        }
         val scrollPane = JScrollPane(textArea)
         JFrame().apply {
             isVisible = true
@@ -24,9 +24,11 @@ class Display {
             add(scrollPane)
         }
 
-        DogRepository.getInstance("asdfsadf")
-            .dogs
-            .joinToString("\n")
+        DogRepository.getInstance("asdfsadf").registerObserver(this)
+    }
+
+    fun onChange(dogs: List<Dog>){
+        dogs.joinToString("\n")
             .let { textArea.text = it }
     }
 }

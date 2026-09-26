@@ -3,7 +3,8 @@ package dog
 
 fun main() {
 
-    val display = Display()
-    display.show()
+    Display().show()
+    Display().show()
+    Administrator().work()
 
 }
