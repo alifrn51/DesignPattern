@@ -8,7 +8,7 @@ class UserRepository private constructor() {
     private val file = File("users.json")
 
     private val _users  = getAllUser()
-    val user
+    val users
         get() = _users.toList()
 
     private fun getAllUser(): MutableList<User> = Json.decodeFromString(file.readText().trim())
