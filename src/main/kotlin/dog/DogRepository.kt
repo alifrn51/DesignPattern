@@ -1,30 +1,40 @@
 package dog
 
 import kotlinx.serialization.json.Json
+import observer.Observable
 import observer.Observer
 import java.io.File
 
-class DogRepository private constructor() {
+class DogRepository private constructor(): Observable<List<Dog>> {
 
+    init {
+        println("Create DogRepository...!")
+    }
     private val file = File("dogs.json")
 
     private val _dogs = getAllDogs()
-    val dogs
+
+    override val currentValue: List<Dog>
         get() = _dogs.toList()
+
+    private val _observers = mutableListOf<Observer<List<Dog>>>()
+    override val observers
+        get() = _observers.toList()
 
     private fun getAllDogs(): MutableList<Dog> = Json.decodeFromString(file.readText().trim())
 
-    private val observers = mutableListOf<Observer<List<Dog>>>()
-
-    fun addOnDogsChangedListener(observer: Observer<List<Dog>>){
-        observers.add(observer)
-        observer.onChange(_dogs)
+    override fun registerObserver(observer: Observer<List<Dog>>) {
+        _observers.add(observer)
+        observer.onChange(currentValue)
     }
 
-    private fun notifyObservers() {
-        for (observer in observers) {
-            observer.onChange(_dogs)
-        }
+    override fun unregisterObserver(observer: Observer<List<Dog>>) {
+        _observers.remove(observer)
+    }
+
+    fun addOnDogsChangedListener(observer: Observer<List<Dog>>){
+        _observers.add(observer)
+        observer.onChange(_dogs)
     }
 
     fun saveChanges() {
