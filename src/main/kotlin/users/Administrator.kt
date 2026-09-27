@@ -33,7 +33,9 @@ class Administrator() {
 
         print("Enter id: ")
         val id = readln().toInt()
-        repository.remove(id)
+        UserInvoker.addCommand {
+            repository.remove(id)
+        }
 
     }
 
@@ -45,7 +47,9 @@ class Administrator() {
         print("Enter age:")
         val age = readln().toInt()
 
-        repository.add(firstName, lastName, age)
+        UserInvoker.addCommand {
+            repository.add(firstName, lastName, age)
+        }
     }
 
 }

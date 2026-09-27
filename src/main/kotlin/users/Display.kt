@@ -23,7 +23,7 @@ class Display {
             isResizable = false
             add(scrollPane)
         }
-
+        UserRepository.getInstance("sfeoi").users.currentValue
         UserRepository.getInstance("sfeoi").users.registerObserver { users ->
             users.joinToString("\n")
                 .let { textArea.text = it }

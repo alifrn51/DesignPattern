@@ -25,11 +25,13 @@ class DogRepository private constructor() {
     }
 
     fun remove(id: Int) {
+        Thread.sleep(10_000)
         _dogs.removeIf { it.id == id }
         dogs.currentValue = _dogs.toList()
     }
 
     fun add(breedName: String, dogName: String, weight: Int) {
+        Thread.sleep(10_000)
         val id = _dogs.maxOf { it.id } + 1
         val dog = Dog(id, breedName, dogName, weight)
         _dogs.add(dog)

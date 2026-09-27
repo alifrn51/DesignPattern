@@ -1,0 +1,25 @@
+package dog
+
+import command.Command
+import command.Invoker
+import java.util.concurrent.LinkedBlockingDeque
+import kotlin.concurrent.thread
+
+object DogInvoker : Invoker {
+
+    private val commands = LinkedBlockingDeque<Command>()
+
+    init {
+        thread {
+            while (true) {
+                val command = commands.take()
+                command.execute()
+            }
+
+        }
+    }
+
+    override fun addCommand(command: Command) {
+        commands.add (command)
+    }
+}
