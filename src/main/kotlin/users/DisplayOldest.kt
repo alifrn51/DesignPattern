@@ -1,4 +1,4 @@
-package dog
+package users
 
 import java.awt.Dimension
 import java.awt.Font
@@ -7,13 +7,14 @@ import javax.swing.JFrame
 import javax.swing.JScrollPane
 import javax.swing.JTextArea
 
-class Display {
+class DisplayOldest {
+
     fun show() {
         val textArea = JTextArea().apply {
             isEditable = false
-            text = "..."
+            text = "Hello wordl"
+            font = Font(Font.SANS_SERIF, Font.PLAIN, 18)
             margin = Insets(32, 32, 32, 32)
-            font = Font(Font.SANS_SERIF, Font.PLAIN, 16)
         }
         val scrollPane = JScrollPane(textArea)
         JFrame().apply {
@@ -23,8 +24,11 @@ class Display {
             add(scrollPane)
         }
 
-        DogRepository.getInstance("asdfsadf").dogs.registerObserver { newValue ->
-            newValue.joinToString("\n").let { textArea.text = it }
+        UserRepository.getInstance("sfeoi").oldestUsers.registerObserver {
+            textArea.text = it.toString()
         }
+
     }
+
+
 }

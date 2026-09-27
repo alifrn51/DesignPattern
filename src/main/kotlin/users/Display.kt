@@ -24,10 +24,10 @@ class Display {
             add(scrollPane)
         }
 
-        UserRepository.getInstance("sfeoi").addOnUsersChangedListener(observer = { users ->
+        UserRepository.getInstance("sfeoi").users.registerObserver { users ->
             users.joinToString("\n")
                 .let { textArea.text = it }
-        })
+        }
 
     }
 
