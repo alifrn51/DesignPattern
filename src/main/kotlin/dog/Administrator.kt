@@ -5,24 +5,25 @@ class Administrator {
 
     private val repository = DogRepository.getInstance("asdfsadf")
 
-    fun work(){
+    fun work() {
 
-        while (true){
+        while (true) {
             print("Enter an operation: ")
             val operations = Operation.entries
-            for ((index, operation) in operations.withIndex()){
+            for ((index, operation) in operations.withIndex()) {
                 print("$index -> ${operation.title}")
-                val separator =if(index== operations.size-1) ": " else ", "
+                val separator = if (index == operations.size - 1) ": " else ", "
                 print(separator)
             }
             val operationIndex = readln().toInt()
             val operation = operations[operationIndex]
 
-            when(operation){
-                Operation.EXIT ->{
-                    repository.saveChanges()
+            when (operation) {
+                Operation.EXIT -> {
+                    DogInvoker.addCommand(AdministratorCommands.SaveChange(repository))
                     break
                 }
+
                 Operation.ADD_DOG -> registerDog()
                 Operation.DELETE_DOG -> deleteDog()
             }
@@ -34,9 +35,8 @@ class Administrator {
     private fun deleteDog() {
         print("Enter id: ")
         val id = readln().toInt()
-        DogInvoker.addCommand {
-            repository.remove(id)
-        }
+
+        DogInvoker.addCommand(AdministratorCommands.DeleteDog(repository, id))
     }
 
     private fun registerDog() {
@@ -47,9 +47,7 @@ class Administrator {
         print("Enter weight:")
         val weight = readln().toInt()
 
-        DogInvoker.addCommand {
-            repository.add(breedName,dogName,weight)
-        }
+        DogInvoker.addCommand(AdministratorCommands.AddDog(repository, breedName, dogName, weight))
     }
 
 
